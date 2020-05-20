@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
             })
         }
         conn.query(
-            'SELECT * FROM categoria;',
+            'SELECT * FROM venda;',
             (error, resultado, fields) => {
                 if (error) {
                     return res.status(500).send({
@@ -35,7 +35,7 @@ router.get('/:id', (req, res) => {
         }
 
         conn.query(
-            'SELECT * FROM categoria WHERE id = ?;',
+            'SELECT * FROM venda WHERE id = ?;',
             [id],
             (error, resultado, fields) => {
                 if (error) {
@@ -60,8 +60,8 @@ router.post('/', (req, res) => {
             })
         }
         conn.query(
-            'INSERT INTO categoria (nome, descricao) values (?,?)',
-            [req.body.nome, req.body.descricao],
+            'INSERT INTO venda (data, total) values (?,?)',
+            [req.body.data, req.body.total],
             (error, resultado, field) => {
                 conn.release();
 
@@ -72,7 +72,7 @@ router.post('/', (req, res) => {
                     });
                 }
                 res.status(201).send({
-                    mensagem: "Categoria inserida " + resultado.insertId,
+                    mensagem: "Venda inserida " + resultado.insertId,
                 })
             }
         )
@@ -89,11 +89,11 @@ router.put('/:id', (req, res) => {
             })
         }
         conn.query(
-            `UPDATE categoria
-            SET  nome = ?,
-            descricao = ?
+            `UPDATE venda
+            SET  data = ?,
+            total = ?
             WHERE id = ?`,
-            [req.body.nome, req.body.descricao, req.params.id],
+            [req.body.data, req.body.total, req.params.id],
             (error, resultado, field) => {
                 conn.release();
                 if (error) {
@@ -102,9 +102,8 @@ router.put('/:id', (req, res) => {
                         response: null
                     });
                 }
-
                 res.status(202).send({
-                    mensagem: "Categoria alterada com sucesso ",
+                    mensagem: "Venda alterada com sucesso ",
                 })
             }
         )
@@ -119,7 +118,7 @@ router.delete('/:id', (req, res) => {
             })
         }
         conn.query(
-            `DELETE FROM categoria WHERE id = ?`,
+            `DELETE FROM venda WHERE id = ?`,
             [req.params.id],
             (error, resultado, field) => {
                 conn.release();
@@ -131,7 +130,7 @@ router.delete('/:id', (req, res) => {
                 }
 
                 res.status(202).send({
-                    mensagem: "Categoria removida com sucesso",
+                    mensagem: "Venda removida com sucesso",
                 })
             }
         )

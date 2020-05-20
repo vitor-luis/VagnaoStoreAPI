@@ -25,6 +25,32 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    mysql.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                error: error
+            })
+        }
+
+        conn.query(
+            'SELECT * FROM produto WHERE id = ?;',
+            [id],
+            (error, resultado, fields) => {
+                if (error) {
+                    return res.status(500).send({
+                        error: error
+                    })
+                }
+                return res.status(200).send({
+                    response: resultado
+                })
+            }
+        )
+    })
+})
+
 router.post('/', (req, res) => {
 
     mysql.getConnection((error, conn) => {
@@ -53,32 +79,6 @@ router.post('/', (req, res) => {
     })
 
 
-})
-
-router.get('/:id', (req, res) => {
-    const id = req.params.id;
-    mysql.getConnection((error, conn) => {
-        if (error) {
-            return res.status(500).send({
-                error: error
-            })
-        }
-
-        conn.query(
-            'SELECT * FROM produto WHERE id = ?;',
-            [id],
-            (error, resultado, fields) => {
-                if (error) {
-                    return res.status(500).send({
-                        error: error
-                    })
-                }
-                return res.status(200).send({
-                    response: resultado
-                })
-            }
-        )
-    })
 })
 
 router.put('/:id', (req, res) => {

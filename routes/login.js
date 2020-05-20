@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
             })
         }
         conn.query(
-            'SELECT * FROM categoria;',
+            'SELECT * FROM login;',
             (error, resultado, fields) => {
                 if (error) {
                     return res.status(500).send({
@@ -35,7 +35,7 @@ router.get('/:id', (req, res) => {
         }
 
         conn.query(
-            'SELECT * FROM categoria WHERE id = ?;',
+            'SELECT * FROM login WHERE id = ?;',
             [id],
             (error, resultado, fields) => {
                 if (error) {
@@ -60,8 +60,8 @@ router.post('/', (req, res) => {
             })
         }
         conn.query(
-            'INSERT INTO categoria (nome, descricao) values (?,?)',
-            [req.body.nome, req.body.descricao],
+            'INSERT INTO login (email, senha, idCliente) values (?,?,?)',
+            [req.body.email, req.body.senha, req.body.idCliente],
             (error, resultado, field) => {
                 conn.release();
 
@@ -72,7 +72,7 @@ router.post('/', (req, res) => {
                     });
                 }
                 res.status(201).send({
-                    mensagem: "Categoria inserida " + resultado.insertId,
+                    mensagem: "Login inserido " + resultado.insertId,
                 })
             }
         )
@@ -89,11 +89,12 @@ router.put('/:id', (req, res) => {
             })
         }
         conn.query(
-            `UPDATE categoria
-            SET  nome = ?,
-            descricao = ?
+            `UPDATE login
+            SET  email = ?, 
+            senha = ?, 
+            idCliente = ?
             WHERE id = ?`,
-            [req.body.nome, req.body.descricao, req.params.id],
+            [req.body.email, req.body.senha, req.body.idCliente, req.params.id],
             (error, resultado, field) => {
                 conn.release();
                 if (error) {
@@ -102,9 +103,8 @@ router.put('/:id', (req, res) => {
                         response: null
                     });
                 }
-
                 res.status(202).send({
-                    mensagem: "Categoria alterada com sucesso ",
+                    mensagem: "Login alterado com sucesso ",
                 })
             }
         )
@@ -119,7 +119,7 @@ router.delete('/:id', (req, res) => {
             })
         }
         conn.query(
-            `DELETE FROM categoria WHERE id = ?`,
+            `DELETE FROM login WHERE id = ?`,
             [req.params.id],
             (error, resultado, field) => {
                 conn.release();
@@ -131,7 +131,7 @@ router.delete('/:id', (req, res) => {
                 }
 
                 res.status(202).send({
-                    mensagem: "Categoria removida com sucesso",
+                    mensagem: "Login removido com sucesso",
                 })
             }
         )
