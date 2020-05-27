@@ -17,9 +17,7 @@ router.get('/', (req, res) => {
                         error: error
                     })
                 }
-                return res.status(200).send({
-                    response: resultado
-                })
+                res.status(200).json({ message: 'Login recuperados com sucesso', data: resultado })
             }
         )
     })
@@ -43,9 +41,7 @@ router.get('/:id', (req, res) => {
                         error: error
                     })
                 }
-                return res.status(200).send({
-                    response: resultado
-                })
+                res.status(200).json({ message: 'Login recuperado com sucesso', data: resultado })
             }
         )
     })
