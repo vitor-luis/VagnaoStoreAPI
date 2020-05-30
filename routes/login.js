@@ -23,8 +23,8 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
-    const id = req.params.id;
+router.get('/:email', (req, res) => {
+    const email = req.params.email;
     mysql.getConnection((error, conn) => {
         if (error) {
             return res.status(500).send({
@@ -33,8 +33,8 @@ router.get('/:id', (req, res) => {
         }
 
         conn.query(
-            'SELECT * FROM login WHERE id = ?;',
-            [id],
+            'SELECT * FROM login WHERE email like ?;',
+            [email],
             (error, resultado, fields) => {
                 if (error) {
                     return res.status(500).send({
@@ -56,8 +56,8 @@ router.post('/', (req, res) => {
             })
         }
         conn.query(
-            'INSERT INTO login (email, senha, idCliente) values (?,?,?)',
-            [req.body.email, req.body.senha, req.body.idCliente],
+            'INSERT INTO login (email, senha, isAdmin) values (?,?,?)',
+            [req.body.email, req.body.senha , req.body.isAdmin],
             (error, resultado, field) => {
                 conn.release();
 
@@ -88,9 +88,9 @@ router.put('/:id', (req, res) => {
             `UPDATE login
             SET  email = ?, 
             senha = ?, 
-            idCliente = ?
+            isAdmin = ?
             WHERE id = ?`,
-            [req.body.email, req.body.senha, req.body.idCliente, req.params.id],
+            [req.body.email, req.body.senha, req.body.isAdmin, req.params.id],
             (error, resultado, field) => {
                 conn.release();
                 if (error) {
