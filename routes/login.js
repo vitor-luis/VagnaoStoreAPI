@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
             })
         }
         conn.query(
-            'SELECT * FROM login;',
+            'SELECT * FROM login where isAdmin = 1;',
             (error, resultado, fields) => {
                 if (error) {
                     return res.status(500).send({
