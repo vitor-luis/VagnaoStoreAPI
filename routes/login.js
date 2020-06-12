@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mysql = require('../mysql').pool
+const jwt = require('jsonwebtoken')
 
 router.get('/', (req, res) => {
     mysql.getConnection((error, conn) => {
@@ -69,6 +70,7 @@ router.post('/', (req, res) => {
                 }
                 res.status(201).send({
                     mensagem: "Login inserido " + resultado.insertId,
+                    data: resultado.insertId
                 })
             }
         )
@@ -131,6 +133,39 @@ router.delete('/:id', (req, res) => {
                 })
             }
         )
+    })
+})
+
+router.post('/logar', (req, res, next) =>{
+    mysql.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                error: error
+            })
+        }
+        const query = `select * from login where email = ?`
+        conn.query(query, [req.body.email], (error, resultado, fields) =>{
+            conn.release();
+            if(error){
+                return res.status(500).send({mensagem: 'Falha na autenticação'})
+            }
+            if(resultado.length < 1){
+                return res.status(401).send({mensagem: 'Falha na autenticação'})
+            }else{
+                if(req.body.senha == resultado[0].senha){
+                    let token = jwt.sign({
+                        id: resultado[0].id,
+                        email: resultado[0].email,
+                        isAdmin: resultado[0].isAdmin
+                    }, process.env.JWT_KEY,{
+                        expiresIn: "24h"
+                    })
+                    return res.status(200).send({mensagem: 'Autenticado com sucesso', token: token})
+                }else{
+                    return res.status(401).send({mensagem: 'Falha na autenticação'})
+                }
+            }
+        })
     })
 })
 

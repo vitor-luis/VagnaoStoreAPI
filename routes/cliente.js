@@ -56,8 +56,8 @@ router.post('/', (req, res) => {
             })
         }
         conn.query(
-            'INSERT INTO cliente (nome, dataNascimento, cpf) values (?,?,?)',
-            [req.body.nome, req.body.dataNascimento, req.body.cpf],
+            'INSERT INTO cliente (nome, dataNascimento, cpf, idLogin) values (?,?,?,?)',
+            [req.body.nome, req.body.dataNascimento, req.body.cpf, req.body.idLogin],
             (error, resultado, field) => {
                 conn.release();
 
