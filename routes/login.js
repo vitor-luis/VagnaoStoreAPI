@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
             })
         }
         conn.query(
-            'SELECT * FROM login where isAdmin = 1;',
+            `SELECT * FROM cliente INNER JOIN login ON cliente.idLogin = login.id where login.isAdmin = 1`,
             (error, resultado, fields) => {
                 if (error) {
                     return res.status(500).send({
