@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
             })
         }
         conn.query(
-            `SELECT * FROM cliente INNER JOIN login ON cliente.idLogin = login.id where login.isAdmin = 1`,
+            `SELECT cliente.*, login.email FROM cliente INNER JOIN login ON cliente.idLogin = login.id where login.isAdmin = 1`,
             (error, resultado, fields) => {
                 if (error) {
                     return res.status(500).send({
@@ -34,7 +34,7 @@ router.get('/:email', (req, res) => {
         }
 
         conn.query(
-            'SELECT * FROM login WHERE email like ?;',
+            'SELECT cliente.*, login.email, login.senha FROM cliente INNER JOIN login ON cliente.idLogin = login.id WHERE email like ?;',
             [email],
             (error, resultado, fields) => {
                 if (error) {

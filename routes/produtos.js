@@ -56,7 +56,7 @@ router.post('/', (req, res) => {
             })
         }
         conn.query(
-            'INSERT INTO produto (nome, descricao, preco, quantidadeEstoque, idCategoria, urlImagem) values (?,?,?,?,?)',
+            'INSERT INTO produto (nome, descricao, preco, quantidadeEstoque, idCategoria, urlImagem) values (?,?,?,?,?,?)',
             [req.body.nome, req.body.descricao, req.body.preco, req.body.quantidadeEstoque, req.body.idCategoria, req.body.urlImagem],
             (error, resultado, field) => {
                 conn.release();
