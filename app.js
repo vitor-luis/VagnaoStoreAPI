@@ -14,19 +14,25 @@ const rotaLogin = require('./routes/login')
 const rotaVenda = require('./routes/venda')
 
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cors())
 app.use(function (req, res, next) {
 
-     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
-     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
- 
-     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
- 
-     res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+
+    res.header("Pragma", "no-cache");
+
+    res.header("Expires", 0);
 
     next()
 })
@@ -42,13 +48,13 @@ app.use('/login', rotaLogin)
 app.use('/venda', rotaVenda)
 
 
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
     const erro = new Error('Nao encontrado');
     erro.status = 404;
     next(erro)
 })
 
-app.use((error, req, res, next) =>{
+app.use((error, req, res, next) => {
     res.status(error.status || 500);
     return res.send({
         erro: {
@@ -56,5 +62,4 @@ app.use((error, req, res, next) =>{
         }
     })
 })
-
 module.exports = app;

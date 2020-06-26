@@ -23,6 +23,30 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/categoria/:id', (req, res) =>{
+    const id = req.params.id
+    mysql.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                error: error
+            })
+        }
+
+        conn.query(
+            'SELECT * FROM produto WHERE idCategoria = ?;',
+            [id],
+            (error, resultado, fields) => {
+                if (error) {
+                    return res.status(500).send({
+                        error: error
+                    })
+                }
+                res.status(200).json({ message: 'Produtos recuperados com sucesso', data: resultado })
+            }
+        )
+    })
+})
+
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     mysql.getConnection((error, conn) => {
