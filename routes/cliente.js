@@ -23,6 +23,7 @@ router.get('/', (req, res) => {
     })
 })
 
+
 router.get('/:id', (req, res) => {
     const id = req.params.id;
     mysql.getConnection((error, conn) => {
@@ -33,7 +34,7 @@ router.get('/:id', (req, res) => {
         }
 
         conn.query(
-            'SELECT * FROM cliente WHERE id = ?;',
+            'SELECT * FROM cliente WHERE idLogin = ?;',
             [id],
             (error, resultado, fields) => {
                 if (error) {
