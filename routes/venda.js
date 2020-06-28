@@ -47,6 +47,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
+
 router.post('/', (req, res) => {
 
     mysql.getConnection((error, conn) => {
@@ -56,8 +57,8 @@ router.post('/', (req, res) => {
             })
         }
         conn.query(
-            'INSERT INTO venda (data, total) values (?,?)',
-            [req.body.data, req.body.total],
+            'INSERT INTO venda (data, total, efetuada) values (?,?,?)',
+            [req.body.data, req.body.total, req.body.efetuada],
             (error, resultado, field) => {
                 conn.release();
 
@@ -69,6 +70,7 @@ router.post('/', (req, res) => {
                 }
                 res.status(201).send({
                     mensagem: "Venda inserida " + resultado.insertId,
+                    data: resultado.insertId
                 })
             }
         )
@@ -87,9 +89,10 @@ router.put('/:id', (req, res) => {
         conn.query(
             `UPDATE venda
             SET  data = ?,
-            total = ?
+            total = ?,
+            efetuada = ?
             WHERE id = ?`,
-            [req.body.data, req.body.total, req.params.id],
+            [req.body.data, req.body.total, req.params.efetuada, req.params.id],
             (error, resultado, field) => {
                 conn.release();
                 if (error) {
