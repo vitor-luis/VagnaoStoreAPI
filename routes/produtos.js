@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
             })
         }
         conn.query(
-            'SELECT * FROM produto;',
+            'SELECT * FROM produto where quantidadeEstoque > 0;',
             (error, resultado, fields) => {
                 if (error) {
                     return res.status(500).send({
@@ -33,7 +33,7 @@ router.get('/categoria/:id', (req, res) =>{
         }
 
         conn.query(
-            'SELECT * FROM produto WHERE idCategoria = ?;',
+            'SELECT * FROM produto WHERE idCategoria = ? and quantidadeEstoque > 0;',
             [id],
             (error, resultado, fields) => {
                 if (error) {

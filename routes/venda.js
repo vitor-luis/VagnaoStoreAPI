@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
             })
         }
         conn.query(
-            'SELECT * FROM venda;',
+            'SELECT * FROM venda where efetuada = 1;',
             (error, resultado, fields) => {
                 if (error) {
                     return res.status(500).send({
