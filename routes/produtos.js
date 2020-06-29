@@ -115,8 +115,9 @@ router.put('/:id', (req, res) => {
             preco = ?,
             quantidadeEstoque = ?
             urlImagem = ?
+            idCategoria = ?
             WHERE id = ?`,
-            [req.body.nome, req.body.descricao, req.body.preco, req.body.quantidadeEstoque, req.body.urlImagem, req.params.id],
+            [req.body.nome, req.body.descricao, req.body.preco, req.body.quantidadeEstoque, req.body.urlImagem, req.params.idCategoria, req.params.id],
             (error, resultado, field) => {
                 conn.release();
                 if (error) {
