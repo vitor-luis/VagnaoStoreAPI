@@ -41,7 +41,30 @@ router.get('/:id', (req, res) => {
                         error: error
                     })
                 }
-                res.status(200).json({ message: 'Venda recuperada com sucesso', data: resultado })
+                res.status(200).json({ message: 'Venda recuperada com sucesso', date: resultado })
+            }
+        )
+    })
+})
+
+router.get('/visualizar/:id', (req, res) => {
+    const id = req.params.id;
+    mysql.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                error: error
+            })
+        }
+        conn.query(
+            'SELECT venda.id as vendaId, venda.total, venda.data, venda.efetuada, cliente.nome, enderecoentrega.* FROM venda inner JOIN enderecoentrega on venda.idEnderecoVenda = enderecoentrega.id inner JOIN cliente on cliente.id = enderecoentrega.idCliente where venda.id = ?',
+            [id],
+            (error, resultado, fields) => {
+                if (error) {
+                    return res.status(500).send({
+                        error: error
+                    })
+                }
+                res.status(200).json({ message: 'Venda recuperada com sucesso', date: resultado })
             }
         )
     })
@@ -90,9 +113,10 @@ router.put('/:id', (req, res) => {
             `UPDATE venda
             SET  data = ?,
             total = ?,
-            efetuada = ?
+            efetuada = ?,
+            idEnderecoVenda = ?
             WHERE id = ?`,
-            [req.body.data, req.body.total, req.params.efetuada, req.params.id],
+            [req.body.data, req.body.total, req.body.efetuada, req.body.idEnderecoVenda, req.params.id],
             (error, resultado, field) => {
                 conn.release();
                 if (error) {

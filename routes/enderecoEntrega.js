@@ -33,7 +33,7 @@ router.get('/:id', (req, res) => {
         }
 
         conn.query(
-            'SELECT * FROM enderecoentrega WHERE id = ?;',
+            'SELECT * FROM enderecoentrega WHERE idCliente = ?;',
             [id],
             (error, resultado, fields) => {
                 if (error) {
