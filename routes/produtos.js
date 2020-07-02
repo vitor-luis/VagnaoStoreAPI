@@ -71,6 +71,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
+
 router.post('/', (req, res) => {
 
     mysql.getConnection((error, conn) => {
@@ -110,14 +111,15 @@ router.put('/:id', (req, res) => {
         }
         conn.query(
             `UPDATE produto
-            SET  nome = ?,
+            SET
+            nome = ?,
             descricao = ?,
             preco = ?,
-            quantidadeEstoque = ?
-            urlImagem = ?
+            quantidadeEstoque = ?,
+            urlImagem = ?,
             idCategoria = ?
             WHERE id = ?`,
-            [req.body.nome, req.body.descricao, req.body.preco, req.body.quantidadeEstoque, req.body.urlImagem, req.params.idCategoria, req.params.id],
+            [req.body.id, req.body.nome, req.body.descricao, req.body.preco, req.body.quantidadeEstoque, req.body.urlImagem, req.body.idCategoria, req.params.id],
             (error, resultado, field) => {
                 conn.release();
                 if (error) {

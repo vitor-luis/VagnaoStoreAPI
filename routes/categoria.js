@@ -2,6 +2,27 @@ const express = require('express')
 const router = express.Router()
 const mysql = require('../mysql').pool
 
+router.get('/todas', (req, res) => {
+    mysql.getConnection((error, conn) => {
+        if (error) {
+            return res.status(500).send({
+                error: error
+            })
+        }
+        conn.query(
+            'select categoria.* from categoria;',
+            (error, resultado, fields) => {
+                if (error) {
+                    return res.status(500).send({
+                        error: error
+                    })
+                }
+                res.status(200).json({ message: 'Categoria recuperada com sucesso', data: resultado })
+            }
+        )
+    })
+})
+
 router.get('/', (req, res) => {
     mysql.getConnection((error, conn) => {
         if (error) {
@@ -10,7 +31,7 @@ router.get('/', (req, res) => {
             })
         }
         conn.query(
-            'SELECT * FROM categoria;',
+            'select categoria.* from categoria where (select count(produto.id) from produto where produto.idCategoria = categoria.id) > 0;',
             (error, resultado, fields) => {
                 if (error) {
                     return res.status(500).send({
